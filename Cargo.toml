@@ -1,0 +1,27 @@
+[package]
+name = "gcpauth"
+version = "0.1.0"
+authors = ["yoshidan <naohiro.y@gmail.com>"]
+edition = "2018"
+repository = "https://github.com/yoshidan/gcpauth"
+keywords = ["gcp","auth","googleapis"]
+license-file = "LICENSE"
+readme = "README.md"
+description = "Google Cloud Platform server application authentication library."
+
+[dependencies]
+hyper = { version = "0.14.9", features = ["full"] }
+hyper-tls = "0.5.0"
+tokio = { version = "1.7.0", features = ["full"] }
+chrono = "0.4.19"
+serde = { version = "1.0.125", features = ["derive"] }
+json = { package = "serde_json", version = "1.0.64" }
+jwt = { package = "jsonwebtoken", version = "7.2.0" }
+thiserror = "1.0.24"
+bb8 = "0.7.0"
+async-trait = "0.1.50"
+home = "0.5.3"
+urlencoding = "2.1.0"
+
+[dev-dependencies]
+base64 = "0.13.0"
