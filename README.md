@@ -18,7 +18,7 @@ gcpauth = { git = "https://github.com/yoshidan/gcpauth/", branch = "main"}
 
 ## Quickstart
 
-```
+```rust
 use gcpauth::*
 
 #[tokio::main]
