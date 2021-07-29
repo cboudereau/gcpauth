@@ -5,7 +5,7 @@ authors = ["yoshidan <naohiro.y@gmail.com>"]
 edition = "2018"
 repository = "https://github.com/yoshidan/gcpauth"
 keywords = ["gcp","auth","googleapis"]
-license-file = "LICENSE"
+license-file = "LICENCE"
 readme = "README.md"
 description = "Google Cloud Platform server application authentication library."
 
