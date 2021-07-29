@@ -8,7 +8,7 @@ Google Cloud Platform server application authentication library.
 
 ```
 [dependencies]
-gcpauth = 0.1.0
+gcpauth = 0.1.1
 ```
 or you can get latest branch.
 ```
@@ -19,11 +19,11 @@ gcpauth = { git = "https://github.com/yoshidan/gcpauth/", branch = "main"}
 ## Quickstart
 
 ```rust
-use gcpauth::*
+use gcpauth::*;
 
 #[tokio::main]
-async fn main() {
-    let audience = "https://spanner.googleapis.com/"
+async fn main() -> Result<(), error::Error> {
+    let audience = "https://spanner.googleapis.com/";
     let scopes = [
         "https://www.googleapis.com/auth/cloud-platform",
         "https://www.googleapis.com/auth/spanner.data",
@@ -38,18 +38,42 @@ async fn main() {
     };
     let ts = create_token_source(config).await?;  
     let token = ts.token().await?;
+    println!("token is {}",token.access_token);
+    Ok(())
 }
 ```
 
 `create_token_source`looks for credentials in the following places,
 preferring the first location found:
 
-   1. A JSON file whose path is specified by the
-      GOOGLE_APPLICATION_CREDENTIALS environment variable.
-   2. A JSON file in a location known to the gcloud command-line tool.
-      On Windows, this is %APPDATA%/gcloud/application_default_credentials.json.
-      On other systems, $HOME/.config/gcloud/application_default_credentials.json.
-   3. On Google Compute Engine, it fetches credentials from the metadata server.
+1. A JSON file whose path is specified by the
+   GOOGLE_APPLICATION_CREDENTIALS environment variable.
+2. A JSON file in a location known to the gcloud command-line tool.
+   On Windows, this is %APPDATA%/gcloud/application_default_credentials.json.
+   On other systems, $HOME/.config/gcloud/application_default_credentials.json.
+3. On Google Compute Engine, it fetches credentials from the metadata server.
+
+### Async Initialization
+
+```rust
+use gcpauth::*;
+use tokio::sync::OnceCell;
+
+static AUTHENTICATOR: OnceCell<Box<dyn gcpauth::token::TokenSource>> = OnceCell::const_new();
+
+#[tokio::main]
+async fn main() -> Result<(),error::Error> {
+    let ts = AUTHENTICATOR.get_or_try_init(|| {
+        gcpauth::create_token_source(gcpauth::Config {
+            audience: Some("https://spanner.googleapis.com/"),
+            scopes: None,
+        })
+    }).await?;
+    let token = ts.token().await?;
+    println!("token is {}",token.access_token);
+    Ok(())
+}
+```
 
 ## Supported Credentials
 
@@ -58,7 +82,7 @@ preferring the first location found:
 - [x] [Authorized User](https://cloud.google.com/docs/authentication/end-user)
 - [ ] [External Account](https://cloud.google.com/anthos/clusters/docs/aws/how-to/workload-identity-gcp?hl=ja)
 - [ ] Google Developers Console client_credentials.json
-  
+
 ## Supported Workload Identity
 
 https://cloud.google.com/iam/docs/workload-identity-federation
