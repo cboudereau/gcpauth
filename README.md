@@ -8,7 +8,7 @@ Google Cloud Platform server application authentication library.
 
 ```
 [dependencies]
-gcpauth = 0.1.1
+gcpauth = 0.1.2
 ```
 or you can get latest branch.
 ```
