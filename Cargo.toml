@@ -18,7 +18,6 @@ serde = { version = "1.0.125", features = ["derive"] }
 json = { package = "serde_json", version = "1.0.64" }
 jwt = { package = "jsonwebtoken", version = "7.2.0" }
 thiserror = "1.0.24"
-bb8 = "0.7.0"
 async-trait = "0.1.50"
 home = "0.5.3"
 urlencoding = "2.1.0"
